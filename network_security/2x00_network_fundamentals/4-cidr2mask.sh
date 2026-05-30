@@ -1,2 +1,2 @@
 #!/bin/bash
-n=$1; for i in 1 2 3 4; do b=$((n>8?8:(n<0?0:n))); printf "%d%s" $((256-2**(8-b))) "$([ $i -lt 4 ] && echo .)"; n=$((n-8)); done; echo
+n=$1; m=$((0xffffffff << (32-n) & 0xffffffff)); printf "%d.%d.%d.%d\n" $((m>>24&255)) $((m>>16&255)) $((m>>8&255)) $((m&255))
