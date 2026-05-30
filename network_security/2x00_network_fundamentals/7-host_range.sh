@@ -1,2 +1,3 @@
 #!/bin/bash
-IFS=. read a b c d <<< "$1"; m=$2; IFS=. read m1 m2 m3 m4 <<< "$(printf "%d.%d.%d.%d" $((0xffffffff << (32-m) >> 24 & 255)) $((0xffffffff << (32-m) >> 16 & 255)) $((0xffffffff << (32-m) >> 8 & 255)) $((0xffffffff << (32-m) & 255)))"; n1=$((a&m1)); n2=$((b&m2)); n3=$((c&m3)); n4=$((d&m4)); b1=$((n1|(~m1&255))); b2=$((n2|(~m2&255))); b3=$((n3|(~m3&255))); b4=$((n4|(~m4&255))); echo "$n1.$n2.$n3.$((n4+1)) - $b1.$b2.$b3.$((b4-1))""
+IFS=. read a b c d <<< "$1"
+m=$2; ip=$((a<<24|b<<16|c<<8|d)); mask=$((0xFFFFFFFF << (32-m) & 0xFFFFFFFF)); net=$((ip & mask)); bc=$((net | ~mask & 0xFFFFFFFF)); printf "%d.%d.%d.%d - %d.%d.%d.%d\n" $((net>>24&255)) $((net>>16&255)) $((net>>8&255)) $((net&255)) $((bc>>24&255)) $((bc>>16&255)) $((bc>>8&255)) $((bc&255))
